@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
-
+import static study.querydsl.entity.QMember.*;
 @SpringBootTest
 @Transactional
 public class QuerydslBasicTest {
@@ -88,5 +88,22 @@ public class QuerydslBasicTest {
                 .fetchOne();
         assertThat(findMember.getUsername()).isEqualTo("member1");
     }
+
+    @Test
+    public void startQuerydsl3(){
+
+        //기본 인스턴스를 static import 함께 사용한 경우
+        //import static study.querydsl.entity.QMember.*;
+
+        //member1 을 찾아라
+        Member findMember = queryFactory
+                .select(member)
+                .from(member)
+                .where(member.username.eq("member1"))
+                .fetchOne();
+
+        assertThat(findMember.getUsername()).isEqualTo("member1");
+    }
+
 }
 
