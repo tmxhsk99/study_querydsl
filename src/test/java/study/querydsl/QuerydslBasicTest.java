@@ -1,5 +1,6 @@
 package study.querydsl;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -153,5 +154,35 @@ public class QuerydslBasicTest {
 
         assertThat(resultList.size()).isEqualTo(1);
     }
+
+    @Test
+    public void resultFetch() {
+        //List
+        List<Member> memberList = queryFactory
+                .selectFrom(member)
+                .fetch();
+
+        //단 건 조회 (없으면 null , 단건이 아닌경우 NonUnitqueResultException 이 발생한다.)
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .fetchOne();
+
+        //처음 한 건 조회
+        Member findMemberFirst = queryFactory
+                .selectFrom(member)
+                .fetchFirst();
+
+        //페이징에서 사용
+        QueryResults<Member> results = queryFactory
+                .selectFrom(member)
+                .fetchResults();
+
+        //count 쿼리로 변경하기
+        long fetchCount = queryFactory
+                .selectFrom(member)
+                .fetchCount();
+
+    }
+
 }
 
