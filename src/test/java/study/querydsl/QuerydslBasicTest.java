@@ -589,7 +589,29 @@ public class QuerydslBasicTest {
 
     }
 
+    /**
+     * 상수 사용 예제
+     * @throws Exception
+     */
+    @Test
+    public void constantExample() throws Exception {
+        Tuple result = queryFactory
+                .select(member.username, Expressions.constant("A"))
+                .from(member)
+                .fetchFirst();
 
+        System.out.println("result = " + result);
+    }
+
+    @Test
+    public void concatExample(){
+        String result = queryFactory
+                .select(member.username.concat("_").concat(member.age.stringValue()))
+                .from(member)
+                .where(member.username.eq("member1"))
+                .fetchOne();
+        System.out.println("result = " + result);
+    }
 }
 
 
