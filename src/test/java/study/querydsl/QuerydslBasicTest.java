@@ -6,6 +6,7 @@ import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.QMember;
@@ -13,6 +14,7 @@ import study.querydsl.entity.QTeam;
 import study.querydsl.entity.Team;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
@@ -27,6 +29,9 @@ import static study.querydsl.entity.QTeam.team;
 public class QuerydslBasicTest {
     @PersistenceContext
     EntityManager em;
+
+    @Autowired
+    EntityManagerFactory emf;
 
     JPQLQueryFactory queryFactory;
 
@@ -159,7 +164,8 @@ public class QuerydslBasicTest {
         assertThat(resultList.size()).isEqualTo(1);
     }
 
-    @Test
+
+
     public void resultFetch() {
         //List
         List<Member> memberList = queryFactory
@@ -382,5 +388,37 @@ public class QuerydslBasicTest {
         }
 
     }
+
+    @Test
+    public void fetchJoinNo() throws Exception {
+
+        em.flush();
+        em.clear();
+
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1"))
+                .fetchOne();
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).as("페치 조인 미적용").isEqualTo(false);
+
+    }
+
+    @Test
+    public void fetchJoin() throws Exception {
+
+        em.flush();
+        em.clear();
+
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .join(member.team, team).fetchJoin()
+                .where(member.username.eq("member1"))
+                .fetchOne();
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).as("페치 조인 적용").isTrue();
+
+    }
+
 }
 
