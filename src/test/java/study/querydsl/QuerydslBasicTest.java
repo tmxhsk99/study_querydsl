@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import study.querydsl.dto.MemberDto;
+import study.querydsl.dto.QMemberDto;
 import study.querydsl.dto.UserDto;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.QMember;
@@ -722,6 +723,36 @@ public class QuerydslBasicTest {
             System.out.println("memberDto = " + memberDto);
         }
 
+    }
+
+    /**
+     * @QueryProjection 활용
+     */
+    @Test
+    public void queryProejctionExample() throws Exception {
+        List<MemberDto> result = queryFactory
+                .select(new QMemberDto(member.username, member.age))
+                .from(member)
+                .fetch();
+
+        for (MemberDto memberDto : result) {
+            System.out.println("memberDto = " + memberDto);
+        }
+    }
+
+    /**
+     * distinct 활용
+     */
+    @Test
+    public void querydslDistinctExample() throws Exception {
+        List<String> result = queryFactory
+                .select(member.username).distinct()
+                .from(member)
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("distinct Result = " + s);
+        }
     }
 
 }
