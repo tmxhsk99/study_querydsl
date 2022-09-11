@@ -12,6 +12,7 @@ import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -864,6 +865,44 @@ public class QuerydslBasicTest {
         //영속성 컨텍스트 초기화
         em.flush();
         em.clear();
+    }
+
+    /**
+     * member M으로 변경하는 replace 함수 사용
+     */
+    @Test
+    public void replaceFunction() throws Exception {
+        String result = queryFactory
+                .select(
+                        Expressions
+                                .stringTemplate("function('replace', {0}, {1}, {2})", member.username, "member", "M"))
+                .from(member)
+                .fetchFirst();
+
+        System.out.println("result = " + result);
+    }
+
+    /**
+     * 소문자로 변경해서 비교해라
+     */
+    @Test
+    public void lowerFunction() throws Exception {
+        String result = queryFactory
+                .select(member.username)
+                .from(member)
+                .where(member.username.eq(Expressions.stringTemplate("function('lower',{0})", member.username)))
+                .fetchFirst();
+
+        System.out.println("result = " + result);
+
+        //lower 같은 ansi 표준 함수들은 querydsl에 상당 부분 내장하고 있다. 따라서 다음과 같이 처리해도 결과는 같다.
+        String result2 = queryFactory
+                .select(member.username)
+                .from(member)
+                .where(member.username.eq(member.username.lower()))
+                .fetchFirst();
+        System.out.println("result2 = " + result2);
+
     }
 
 }
