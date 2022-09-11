@@ -815,6 +815,57 @@ public class QuerydslBasicTest {
         //null 체크는 주의해서 처리해야함
         return usernameEq(usernameCond).and(ageEq(ageCond));
     }
+
+    /**
+     * 쿼리 한번으로 대량 데이터 수정
+     */
+    @Test
+    public void bulkUpdate() throws Exception {
+        long count = queryFactory
+                .update(member)
+                .set(member.username, "비회원")
+                .where(member.age.lt(28))
+                .execute();
+
+        System.out.println("count = " + count);
+        //영속성 컨텍스트 초기화
+        em.flush();
+        em.clear();
+    }
+
+    /**
+     * 기존 숫자에 1더하기
+     * 곱하기 : multiply(x)
+     */
+    @Test
+    public void bulkAddCount() throws Exception {
+        long count = queryFactory
+                .update(member)
+                .set(member.age, member.age.add(1))
+                .execute();
+        System.out.println("count = " + count);
+
+        //영속성 컨텍스트 초기화
+        em.flush();
+        em.clear();
+    }
+
+    /**
+     * 쿼리 한번으로 데이터 삭제
+     */
+    @Test
+    public void bulkBatchDelete() throws Exception {
+        long count = queryFactory
+                .delete(member)
+                .where(member.age.gt(18))
+                .execute();
+        System.out.println("count = " + count);
+
+        //영속성 컨텍스트 초기화
+        em.flush();
+        em.clear();
+    }
+
 }
 
 
