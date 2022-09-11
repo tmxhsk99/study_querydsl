@@ -612,6 +612,33 @@ public class QuerydslBasicTest {
                 .fetchOne();
         System.out.println("result = " + result);
     }
+
+    @Test
+    public void projectionBasicExample() throws Exception {
+        List<String> result = queryFactory
+                .select(member.username)
+                .from(member)
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("result = " + s);
+        }
+    }
+
+    @Test
+    public void tupleBasicExample() throws Exception {
+        List<Tuple> result = queryFactory
+                .select(member.username, member.age)
+                .from(member)
+                .fetch();
+
+        for (Tuple tuple : result) {
+            String username = tuple.get(member.username);
+            int age = tuple.get(member.age);
+            System.out.println("username = " + username);
+            System.out.println("age = " + age);
+        }
+    }
 }
 
 
