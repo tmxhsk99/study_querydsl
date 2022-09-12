@@ -1,6 +1,8 @@
 package study.querydsl.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
@@ -100,5 +102,58 @@ public class MemberJpaRepository {
 
     }
 
+    /**
+     * 동적 쿼리와 성능 최적화 조회 - Where절 파라미터 사용
+     * 회원명 , 팀명 , 나이(ageGoe, ageLoe)
+     */
+    public List<MemberTeamDto> search(MemberSearchCondition condition) {
+        return queryFactory
+                .select(new QMemberTeamDto(
+                        member.id,
+                        member.username,
+                        member.age,
+                        team.id,
+                        team.name
+                ))
+                .from(member)
+                .leftJoin(member.team, team)
+                .where( usernameEq(condition.getUsername()),
+                        teamNameEq(condition.getTeamName()),
+                        ageGoe(condition.getAgeGoe()),
+                        ageLoe(condition.getAgeLoe()))
+                .fetch();
+    }
+
+    public List<Member> findMember (MemberSearchCondition condition){
+        return queryFactory
+                .selectFrom(member)
+                .leftJoin(member.team,team)
+                .where(
+                        usernameEq(condition.getUsername()),
+                        teamNameEq(condition.getTeamName()),
+                        ageGoe(condition.getAgeGoe()),
+                        ageLoe(condition.getAgeLoe())
+                )
+                .fetch();
+    }
+
+    private BooleanExpression usernameEq(String username) {
+        return hasText(username) ?  member.username.eq(username) : null;
+    }
+
+    private BooleanExpression teamNameEq(String teamName) {
+        return hasText(teamName) ? team.name.eq(teamName) : null;
+    }
+
+    private BooleanExpression ageGoe (Integer ageGoe) {
+        return ageGoe == null ? null : member.age.goe(ageGoe);
+    }
+
+    private BooleanExpression ageLoe (Integer ageLoe) {
+        return ageLoe == null ? null : member.age.loe(ageLoe);
+    }
 
 }
+
+
+

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: test
   datasource:
     #url: jdbc:h2:tcp://localhost/D:/Study/spring_jpa_basic/h2_db_home
     url:  jdbc:h2:tcp://localhost/D:/Dev/h2_db_home/spring_jpa_data
