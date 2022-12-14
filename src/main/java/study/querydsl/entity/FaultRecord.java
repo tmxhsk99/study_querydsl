@@ -10,6 +10,7 @@ import javax.persistence.*;
 @IdClass(FaultRecordId.class)
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class FaultRecord {
     @Id
     private String pvid;

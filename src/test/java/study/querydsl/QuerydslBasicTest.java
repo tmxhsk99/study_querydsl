@@ -67,7 +67,6 @@ public class QuerydslBasicTest {
         em.persist(member2);
         em.persist(member3);
         em.persist(member4);
-
     }
 
     //Querydsl va JPQL
@@ -398,7 +397,6 @@ public class QuerydslBasicTest {
 
         for (Tuple tuple : result) {
             System.out.println("tuple = " + tuple);
-
         }
 
     }
