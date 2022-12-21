@@ -56,7 +56,7 @@ class FaultRecordServiceTest {
     }
 
     @Test
-    @DisplayName("메인화면 실시간 고정정보 성공 기간 테스트 ")
+    @DisplayName(" 기간 조회 성공 테스트 ")
     public void getList_localDB_ShouldPass() throws InterruptedException {
         //given
         DeviceInfo[] deviceInfos = new DeviceInfo[3];
