@@ -1,7 +1,6 @@
 package study.querydsl.repository;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.entity.*;
-import study.querydsl.response.FaultRecordViewResponse;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -90,8 +88,5 @@ public class QuerydslFaultRecordTest {
         for (Tuple tuple : result) {
             System.out.println("tuple = " + tuple);
         }
-
-
     }
-
 }

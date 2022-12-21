@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
 @Getter
@@ -14,16 +13,13 @@ import javax.persistence.Table;
 @ToString
 public class FaultCode {
     @Id
-    @Column(name="mfds1")
+    @Column(name = "mfds1", columnDefinition = "INT(11)")
     private Integer mfds1;
 
-    @Column(name="message")
     private String message;
 
-    @Column(name="fault_code")
     private String faultCode;
 
-    @Column(name="fualt_gubun")
     private Integer faultGubun;
 
     @Builder

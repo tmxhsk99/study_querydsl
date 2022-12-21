@@ -2,10 +2,7 @@ spring:
   profiles:
     active: test
   datasource:
-    #url: jdbc:h2:tcp://localhost/D:/Study/spring_jpa_basic/h2_db_home
-    url:  jdbc:h2:tcp://localhost/D:/Dev/h2_db_home/spring_jpa_data
-    username: sa
-    password:
+    url: jdbc:h2:mem:testdb;MODE=MYSQL
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:

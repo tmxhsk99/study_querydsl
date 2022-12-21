@@ -50,7 +50,6 @@ class FaultRecordTest {
 
         System.out.println("faultRecord = " + findfaultRecord2.toString());
 
-
     }
 
 }
