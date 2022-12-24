@@ -5,42 +5,40 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import study.querydsl.entity.FaultRecord;
-import study.querydsl.entity.FaultRecordId;
+import study.querydsl.entity.LogInfoRecord;
+import study.querydsl.entity.LogInfoRecordId;
 
 import javax.persistence.EntityManager;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Transactional
-class FaultRecordRepositoryTest {
+class LogInfoRecordRepositoryTest {
 
     @Autowired
     EntityManager em;
 
     @Autowired
-    FaultRecordRepository faultRecordRepository;
+    LogInfoRecordRepository logInfoRecordRepository;
 
     @Test
     public void basicTest() throws RuntimeException {
-        FaultRecord faultRecord = FaultRecord.builder()
+        LogInfoRecord logInfoRecord = LogInfoRecord.builder()
                 .faultCode(1)
                 .faultGroup(1)
-                .pvid("111")
+                .oid("111")
                 .deviceCode(1)
                 .speed(200)
                 .build();
 
-        faultRecordRepository.save(faultRecord);
+        logInfoRecordRepository.save(logInfoRecord);
 
-        FaultRecord findFaultRecord = faultRecordRepository.findById(FaultRecordId.builder()
+        LogInfoRecord findLogInfoRecord = logInfoRecordRepository.findById(LogInfoRecordId.builder()
                 .faultCode(1)
-                .pvid("111")
+                .oid("111")
                 .deviceCode(1)
                 .build()).orElseThrow(() -> new RuntimeException("Not Found FaultRecord!!!"));
 
-        Assertions.assertThat(faultRecord).isEqualTo(findFaultRecord);
+        Assertions.assertThat(logInfoRecord).isEqualTo(findLogInfoRecord);
 
     }
 

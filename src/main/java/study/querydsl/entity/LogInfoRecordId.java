@@ -1,31 +1,29 @@
 package study.querydsl.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.hibernate.Hibernate;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @NoArgsConstructor
-public class FaultRecordId implements Serializable {
-    private String pvid; // FaultRecord.pvid 매핑
+public class LogInfoRecordId implements Serializable {
+    private String oid; // FaultRecord.pvid 매핑
 
     private Integer faultCode;
 
     private Integer deviceCode;
 
     @Builder
-    public FaultRecordId(String pvid, Integer faultCode, Integer deviceCode) {
-        this.pvid = pvid;
+    public LogInfoRecordId(String oid, Integer faultCode, Integer deviceCode) {
+        this.oid = oid;
         this.faultCode = faultCode;
         this.deviceCode = deviceCode;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pvid,faultCode,deviceCode);
+        return Objects.hash(oid,faultCode,deviceCode);
     }
 
     @Override
@@ -39,9 +37,9 @@ public class FaultRecordId implements Serializable {
         if(getClass() != obj.getClass()){
             return false;
         }
-        FaultRecordId input = (FaultRecordId) obj;
+        LogInfoRecordId input = (LogInfoRecordId) obj;
 
-        return input.pvid.equals(this.pvid) && input.faultCode == this.faultCode && input.deviceCode == this.deviceCode;
+        return input.oid.equals(this.oid) && input.faultCode == this.faultCode && input.deviceCode == this.deviceCode;
     }
 
 }

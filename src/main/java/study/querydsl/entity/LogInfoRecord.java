@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@IdClass(FaultRecordId.class)
+@IdClass(LogInfoRecordId.class)
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class FaultRecord {
+public class LogInfoRecord {
     @Id
-    private String pvid;
+    private String oid;
 
     @Id
     private Integer faultCode;
@@ -33,8 +33,8 @@ public class FaultRecord {
     private String occurDate;
 
     @Builder
-    public FaultRecord(String pvid, Integer faultCode, Integer deviceCode, Integer speed, Integer faultGroup, LocalDateTime occurTime, String occurDate) {
-        this.pvid = pvid;
+    public LogInfoRecord(String oid, Integer faultCode, Integer deviceCode, Integer speed, Integer faultGroup, LocalDateTime occurTime, String occurDate) {
+        this.oid = oid;
         this.faultCode = faultCode;
         this.deviceCode = deviceCode;
         this.speed = speed;

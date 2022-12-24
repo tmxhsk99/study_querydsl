@@ -13,9 +13,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+import static study.querydsl.entity.QLogInfoRecord.*;
+
 @SpringBootTest
 @Transactional
-public class QuerydslFaultRecordTest {
+public class QuerydslLogInfoRecordTest {
 
     @PersistenceContext
     EntityManager em;
@@ -50,39 +52,39 @@ public class QuerydslFaultRecordTest {
 
     @Test
     public void noRelationJoinTest(){
-        FaultRecord faultRecord = FaultRecord.builder()
-                .pvid("111")
+        LogInfoRecord logInfoRecord = LogInfoRecord.builder()
+                .oid("111")
                 .faultCode(0)
                 .deviceCode(0)
                 .speed(100)
                 .faultGroup(0)
                 .build();
 
-        FaultRecord faultRecord2 = FaultRecord.builder()
-                .pvid("222")
+        LogInfoRecord logInfoRecord2 = LogInfoRecord.builder()
+                .oid("222")
                 .faultCode(1)
                 .deviceCode(1)
                 .speed(200)
                 .faultGroup(1)
                 .build();
 
-        FaultRecord faultRecord3 = FaultRecord.builder()
-                .pvid("333")
+        LogInfoRecord logInfoRecord3 = LogInfoRecord.builder()
+                .oid("333")
                 .faultCode(2)
                 .deviceCode(2)
                 .speed(300)
                 .faultGroup(2)
                 .build();
 
-        em.persist(faultRecord);
-        em.persist(faultRecord2);
-        em.persist(faultRecord3);
+        em.persist(logInfoRecord);
+        em.persist(logInfoRecord2);
+        em.persist(logInfoRecord3);
 
         List<Tuple> result = queryFactory
-                .select(QFaultRecord.faultRecord, QFaultCode.faultCode1, QDeviceInfo.deviceInfo.name)
-                .from(QFaultRecord.faultRecord)
-                .leftJoin(QDeviceInfo.deviceInfo).on(QFaultRecord.faultRecord.deviceCode.eq(QDeviceInfo.deviceInfo.deviceCode))
-                .leftJoin(QFaultCode.faultCode1).on(QFaultRecord.faultRecord.faultCode.eq(QFaultCode.faultCode1.mfds1))
+            .select(QLogInfoRecord.logInfoRecord, QFaultCode.faultCode1, QDeviceInfo.deviceInfo.name)
+                .from(QLogInfoRecord.logInfoRecord)
+                .leftJoin(QDeviceInfo.deviceInfo).on(QLogInfoRecord.logInfoRecord.deviceCode.eq(QDeviceInfo.deviceInfo.deviceCode))
+                .leftJoin(QFaultCode.faultCode1).on(QLogInfoRecord.logInfoRecord.faultCode.eq(QFaultCode.faultCode1.mfds1))
                 .fetch();
 
         for (Tuple tuple : result) {

@@ -1,7 +1,6 @@
 package study.querydsl.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,28 +8,26 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.entity.DeviceInfo;
 import study.querydsl.entity.FaultCode;
-import study.querydsl.entity.FaultRecord;
+import study.querydsl.entity.LogInfoRecord;
 import study.querydsl.repository.DeviceInfoRepository;
 import study.querydsl.repository.FaultCodeRepository;
-import study.querydsl.repository.FaultRecordRepository;
-import study.querydsl.request.FaultRecordSearch;
+import study.querydsl.repository.LogInfoRecordRepository;
+import study.querydsl.request.LogInfoRecordSearch;
 import study.querydsl.response.FaultRecordResponse;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
 @Transactional
-class FaultRecordServiceTest {
+class LogInfoRecordServiceTest {
     @Autowired
-    FaultRecordRepository faultRecordRepository;
+    LogInfoRecordRepository logInfoRecordRepository;
 
     @Autowired
     FaultCodeRepository faultCodeRepository;
@@ -51,7 +48,7 @@ class FaultRecordServiceTest {
     @DisplayName("테이블 초기화")
     public void setting() {
         deviceInfoRepository.deleteAll();
-        faultRecordRepository.deleteAll();
+        logInfoRecordRepository.deleteAll();
         faultCodeRepository.deleteAll();
     }
 
@@ -61,7 +58,7 @@ class FaultRecordServiceTest {
         //given
         DeviceInfo[] deviceInfos = new DeviceInfo[3];
         FaultCode[] faultCodes = new FaultCode[3];
-        FaultRecord[] faultRecords = new FaultRecord[3];
+        LogInfoRecord[] logInfoRecords = new LogInfoRecord[3];
         for(int i = 0;i < 3;i++){
             // DeviceInfo Data
             deviceInfos[i] = DeviceInfo.builder()
@@ -76,8 +73,8 @@ class FaultRecordServiceTest {
                     .mfds1(i)
                     .build();
             // FaultRecord Data
-            faultRecords[i] = FaultRecord.builder()
-                    .pvid("pvid" + i)
+            logInfoRecords[i] = LogInfoRecord.builder()
+                    .oid("oid" + i)
                     .occurDate(DateTimeFormatter.ofPattern("yyyyMMdd").format(LocalDateTime.now()))
                     .occurTime(LocalDateTime.now())
                     .deviceCode(i)
@@ -87,7 +84,7 @@ class FaultRecordServiceTest {
                     .build();
             deviceInfoRepository.save(deviceInfos[i]);
             faultCodeRepository.save(faultCodes[i]);
-            faultRecordRepository.save(faultRecords[i]);
+            logInfoRecordRepository.save(logInfoRecords[i]);
             em.flush();
             em.clear();
             //insert 순서 차이를 주기위해 sleep 초단위로 정렬을하기때문에 1초를 준다.
@@ -109,7 +106,7 @@ class FaultRecordServiceTest {
         int eMin = 20;
         int eSec = 15;
 
-        FaultRecordSearch search = FaultRecordSearch.builder()
+        LogInfoRecordSearch search = LogInfoRecordSearch.builder()
                 .startDate(LocalDateTime.of(sYear,sMonth,sDay,sHour,sMin,sSec))
                 .endDate(LocalDateTime.of(eYear,eMonth,eDay,eHour,eMin,eSec))
                 .build();

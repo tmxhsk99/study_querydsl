@@ -13,10 +13,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FaultRecordSearch {
-    private String pvid;
+public class LogInfoRecordSearch {
+    private String oid;
 
-    private List<String> pvids = new ArrayList<>();
+    private List<String> oids = new ArrayList<>();
 
     private String occurDate;
 
